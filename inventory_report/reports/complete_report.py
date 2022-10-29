@@ -2,6 +2,7 @@ from collections import Counter
 
 from inventory_report.reports.simple_report import SimpleReport
 
+
 class CompleteReport():
     def get_products_quantity_by_company(self, stock):
         count_companies = list()
