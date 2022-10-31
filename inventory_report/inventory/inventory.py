@@ -7,7 +7,8 @@ from inventory_report.reports.simple_report import SimpleReport
 
 
 class Inventory:
-    def reader_csv(path):
+    @classmethod
+    def reader_csv(self, path):
         stock = []
         with open(path) as file:
             stock_csv = csv.DictReader(file)
@@ -15,7 +16,8 @@ class Inventory:
                 stock.append(product)
         return stock
 
-    def reader_json(path):
+    @classmethod
+    def reader_json(self, path):
         stock = []
         with open(path) as file:
             stock_json = json.load(file)
@@ -23,7 +25,8 @@ class Inventory:
                 stock.append(product)
         return stock
 
-    def reader_xml(path):
+    @classmethod
+    def reader_xml(self, path):
         inventory_list = []
         with open(path) as file:
             read_file = xmltodict.parse(file.read())
@@ -31,19 +34,19 @@ class Inventory:
         return inventory_list
 
     @classmethod
-    def reader_file(self, path):
+    def import_data(self, path, type):
         if path.endswith(".csv"):
-            return self.reader_csv(path)
+            product_list = self.reader_csv(path)
         elif path.endswith(".json"):
-            return self.reader_json(path)
+            product_list = self.reader_json(path)
         elif path.endswith(".xml"):
-            return self.reader_xml(path)
+            product_list = self.reader_xml(path)
+        return self.verify_type(product_list, type)
 
     @classmethod
-    def import_data(self, path, type):
-        stock = self.reader_file(path)
+    def verify_type(self, product_list, type):
 
         if (type == 'simples'):
-            return SimpleReport.generate(stock)
+            return SimpleReport.generate(product_list)
         elif (type == 'completo'):
-            return CompleteReport.generate(stock)
+            return CompleteReport.generate(product_list)
