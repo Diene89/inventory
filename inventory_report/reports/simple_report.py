@@ -25,7 +25,7 @@ class SimpleReport:
     def get_company_with_most_products(self, stock):
         companies = Counter(product["nome_da_empresa"] for product in stock)
         return companies.most_common(1)[0][0]
-       
+                   
     @classmethod
     def generate(self, stock):
 
